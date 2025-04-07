@@ -252,3 +252,14 @@ void add_record(Bill *bill, CallRecord record) {
     bill->count++;
 }
 
+const char* convert_month_by_number(int month) {
+    static const char *months[] = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+    if (month < 1 || month > 12) {
+        return "Invalid";
+    }
+    return months[month - 1];
+}   
+

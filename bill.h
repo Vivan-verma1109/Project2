@@ -70,6 +70,8 @@ void average_duration(FILE *out, Bill *bill);
 //name to month conversion
 int convert_month_by_name(const char *month);
 
+//number to month conversion
+const char* convert_month_by_number(int month);
 
 //ADD MY RECORD PLZ
 void add_record(Bill *bill, CallRecord record);
