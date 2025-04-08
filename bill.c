@@ -139,12 +139,19 @@ void summarize_bill(FILE *out, Bill *bill) {
 
     float avg_duration = total_calls ? (float)total_duration / total_calls : 0.0;
     float avg_cost = total_calls ? total_cost / total_calls : 0.0;
+    
+    int year;
+    if (bill->count > 0) {
+        year = bill->calls[0].date.year;
+    } else {
+        year = 0;
+    }
 
-    fprintf(out, "      Year 2020:    Total %d    Average Duration: %.4f   Average Cost: %.6f\n",
+    fprintf(out, "      Year %d:    Total %d    Average Duration: %.4f   Average Cost: %.6f\n",
+        year,
         total_calls,
         avg_duration,
-        avg_cost
-    );
+        avg_cost);
 }
 
 

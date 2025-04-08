@@ -15,7 +15,7 @@ Command: summarize
        February:    Total 2 Average Duration: 37.5000   Average Cost: 1.25
           March:    Total 1 Average Duration: 26.0000   Average Cost: 0.83
           April:    Total 0 Average Duration: 0     Average Cost: 0
-            May:    Total 3 Average Duration: 44.3333   Average Cost: 0.73 
+            May:    Total 3 Average Duration: 44.3333   Average Cost: 0.73
            June:    Total 2 Average Duration: 22.0000   Average Cost: 0.81
            July:    Total 4 Average Duration: 47.5000   Average Cost: 1.20
          August:    Total 2 Average Duration: 44.5000   Average Cost: 1.37
