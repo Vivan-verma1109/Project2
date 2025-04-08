@@ -3,6 +3,18 @@
 #include <string.h>
 #include "bill.h"
 
+
+const char* convert_month(int month) {
+    static const char *months[] = {
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+    if (month < 1 || month > 12) {
+        return "Invalid";
+    }
+    return months[month - 1];
+}   
+
 // init the bill struct
 void init_bill(Bill *bill) {
     bill->count = 0;
@@ -56,17 +68,18 @@ void read_bill(const char *filename, Bill *bill) {
         if (line[0] == '#' || line[0] == '\n' || line[0] == '\r') continue;
 
         CallRecord rec;
-        int phone;
+        unsigned long long phone;
 
-        if (sscanf(line, "%4d%2d%2d %4d %d %d %f",
-                   &rec.date.year,
-                   &rec.date.month,
-                   &rec.date.day,
-                   &rec.time,
-                   &phone,
-                   &rec.duration,
-                   &rec.cost) == 7) {
-            // componentiate (new word discovered)
+        if (sscanf(line, "%4d%2d%2d %4d %llu %d %f",
+                &rec.date.year,
+                &rec.date.month,
+                &rec.date.day,
+                &rec.time,
+                &phone,
+                &rec.duration,
+                &rec.cost) == 7) {
+
+            // componentiate
             rec.number.areaCode = phone / 10000000;
             rec.number.exchange = (phone / 10000) % 1000;
             rec.number.line = phone % 10000;
@@ -91,7 +104,7 @@ void display_bill(FILE *out, Bill *bill) {
     for (int i = 0; i < bill->count; i++) {
         CallRecord *rec = &bill->calls[i];
 
-        fprintf(out, "%04d%02d%02d    %04d    %03d%03d%04d  %-5d %.2f\n",
+        fprintf(out, "%04d%02d%02d    %04d    %03d%03d%04d  %-4d%.2f\n",
             rec->date.year,
             rec->date.month,
             rec->date.day,
@@ -102,6 +115,7 @@ void display_bill(FILE *out, Bill *bill) {
             rec->duration,
             rec->cost
         );
+
     }
 }
 
@@ -151,17 +165,18 @@ void summarize_month(FILE *out, Bill *bill, int month) {
     const char *month_name = convert_month(month);
 
     if (total_calls == 0) {
-        fprintf(out, "%12s:    Total 0 Average Duration: 0     Average Cost: 0\n", month_name);
+        fprintf(out, "   %12s:    Total 0 Average Duration: 0     Average Cost: 0\n", month_name);
+
     } else {
         float avg_duration = (float)total_duration / total_calls;
         float avg_cost = total_cost / total_calls;
 
-        fprintf(out, "%12s:    Total %d Average Duration: %.4f   Average Cost: %.2f\n",
+        fprintf(out, "   %12s:    Total %d Average Duration: %.4f   Average Cost: %.2f\n",
             month_name,
             total_calls,
             avg_duration,
-            avg_cost
-        );
+            avg_cost);
+
     }
 }
 
@@ -252,14 +267,5 @@ void add_record(Bill *bill, CallRecord record) {
     bill->count++;
 }
 
-const char* convert_month_by_number(int month) {
-    static const char *months[] = {
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    };
-    if (month < 1 || month > 12) {
-        return "Invalid";
-    }
-    return months[month - 1];
-}   
+
 

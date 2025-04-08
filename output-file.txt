@@ -1,0 +1,58 @@
+Command: load bill-1.txt
+    Loaded 25 records from bill-1.txt
+Command: average cost
+        Average Cost: 1.14
+Command: average duration
+        Average Duration: 40.8400
+Command: summarize October
+        October:    Total 3 Average Duration: 46.3333   Average Cost: 1.07
+Command: average duration
+        Average Duration: 40.8400
+Command: average cost
+        Average Cost: 1.14
+Command: summarize
+        January:    Total 2 Average Duration: 45.0000   Average Cost: 0.85
+       February:    Total 2 Average Duration: 37.5000   Average Cost: 1.25
+          March:    Total 1 Average Duration: 26.0000   Average Cost: 0.83
+          April:    Total 0 Average Duration: 0     Average Cost: 0
+            May:    Total 3 Average Duration: 44.3333   Average Cost: 0.73 
+           June:    Total 2 Average Duration: 22.0000   Average Cost: 0.81
+           July:    Total 4 Average Duration: 47.5000   Average Cost: 1.20
+         August:    Total 2 Average Duration: 44.5000   Average Cost: 1.37
+      September:    Total 1 Average Duration: 68.0000   Average Cost: 1.96
+        October:    Total 3 Average Duration: 46.3333   Average Cost: 1.07
+       November:    Total 4 Average Duration: 35.2500   Average Cost: 1.56
+       December:    Total 1 Average Duration: 26.0000   Average Cost: 0.71
+      Year 2020:    Total 25    Average Duration: 40.8400   Average Cost: 1.140400
+Command: display
+Linda Clark
+456 Elm St
+Georgetown, AZ 39794
+
+Date        Time    Number      Drtn    Cost
+-----------------------------------------------------
+20200113    1549    3122552789  32  0.11
+20200116    1158    3102486999  58  1.58
+20200201    0607    2122365835  45  1.76
+20200218    1413    3102121379  30  0.75
+20200319    0956    2122499991  26  0.83
+20200512    1752    2122277678  56  1.28
+20200528    0047    2122606478  57  0.76
+20200529    2123    4042497821  20  0.16
+20200614    0445    3102227091  10  0.24
+20200629    1719    4042339086  34  1.38
+20200707    0652    3122593850  63  1.00
+20200724    0619    4152296860  22  1.51
+20200724    1239    2122489938  37  0.62
+20200726    1757    3122365228  68  1.68
+20200802    0033    2122301773  49  1.82
+20200802    1306    4042568364  40  0.92
+20200909    2135    4152467284  68  1.96
+20201019    2252    3102379342  40  0.10
+20201021    1612    3122415690  45  1.54
+20201028    2020    4042211347  54  1.57
+20201103    0629    3102446735  14  1.81
+20201104    1829    3102175593  22  1.49
+20201123    1015    2122599604  54  1.93
+20201124    0438    3102522398  51  1.00
+20201220    0323    4152385246  26  0.71
