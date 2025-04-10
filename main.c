@@ -7,7 +7,7 @@
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         fprintf(stderr, "Usage: %s <commands.txt> <output.txt>\n", argv[0]);
-        return EXIT_FAILURE;
+        return -1;
     }
 
     FILE *in = fopen(argv[1], "r");
@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     if (!in || !out) {
         fprintf(stderr, "Could't open output'.\n");
-        return EXIT_FAILURE;
+        return -1;
     }
 
     char line[100]; //just some set amt
@@ -77,5 +77,5 @@ int main(int argc, char *argv[]) {
     free_bill(&bill);
     fclose(in);
     fclose(out);
-    return EXIT_SUCCESS;
+    return 0;
 }

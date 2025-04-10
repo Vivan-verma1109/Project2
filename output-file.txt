@@ -3,11 +3,11 @@ Command: load bill-1.txt
 Command: average cost
         Average Cost: 1.14
 Command: average duration
-        Average Duration: 40.8400
+        Average Duration: 40.0000
 Command: summarize October
         October:    Total 3 Average Duration: 46.3333   Average Cost: 1.07
 Command: average duration
-        Average Duration: 40.8400
+        Average Duration: 40.0000
 Command: average cost
         Average Cost: 1.14
 Command: summarize

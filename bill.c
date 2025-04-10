@@ -9,9 +9,6 @@ const char* convert_month(int month) {
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     };
-    if (month < 1 || month > 12) {
-        return "Invalid";
-    }
     return months[month - 1];
 }   
 
@@ -23,7 +20,7 @@ void init_bill(Bill *bill) {
 
     if (bill->calls == NULL) {
         fprintf(stderr, "malloc failed during init phase\n");
-        exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);//basically return -1
     }
 }
 
@@ -39,16 +36,16 @@ void free_bill(Bill *bill) {
 
 // read za bill file and all its stuffs
 void read_bill(const char *filename, Bill *bill) {
-    FILE *fp = fopen(filename, "r");
-    if (!fp) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
         fprintf(stderr, "could not open file %s\n", filename);
-        exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);//basically return -1
     }
 
     // Read le customer info
-    fgets(bill->name, sizeof(bill->name), fp);
-    fgets(bill->address1, sizeof(bill->address1), fp);
-    fgets(bill->address2, sizeof(bill->address2), fp);
+    fgets(bill->name, sizeof(bill->name), file);
+    fgets(bill->address1, sizeof(bill->address1), file);
+    fgets(bill->address2, sizeof(bill->address2), file);
 
     bill->name[strcspn(bill->name, "\n")] = '\0';
     bill->address1[strcspn(bill->address1, "\n")] = '\0';
@@ -57,15 +54,20 @@ void read_bill(const char *filename, Bill *bill) {
     char line[256];
 
     // Skip stuff
-    while (fgets(line, sizeof(line), fp)) {
-        if (line[0] == '#' || line[0] == '\n' || line[0] == '\r') continue;
-
-        if (strchr(line, '-') != NULL && strstr(line, "Date") == NULL) break;
+    while (fgets(line, sizeof(line), file)) {
+        if (line[0] == '#' || line[0] == '\n' || line[0] == '\r'){ 
+            continue;
+        }
+        if (strchr(line, '-') != NULL && strstr(line, "Date") == NULL){ 
+            break;
+        }
     }
 
     // Read za records
-    while (fgets(line, sizeof(line), fp)) {
-        if (line[0] == '#' || line[0] == '\n' || line[0] == '\r') continue;
+    while (fgets(line, sizeof(line), file)) {
+        if (line[0] == '#' || line[0] == '\n' || line[0] == '\r'){
+            continue;
+        }
 
         CallRecord rec;
         unsigned int phone;
@@ -79,7 +81,7 @@ void read_bill(const char *filename, Bill *bill) {
                 &rec.duration,
                 &rec.cost) == 7) {
 
-            // componentiate
+            // componentiate (berak into components)
             rec.number.areaCode = phone / 10000000;
             rec.number.exchange = (phone / 10000) % 1000;
             rec.number.line = phone % 10000;
@@ -87,10 +89,8 @@ void read_bill(const char *filename, Bill *bill) {
             add_record(bill, rec);
         }
     }
-
-    fclose(fp);
+    fclose(file);
 }
-
 
 // format za bill as neeeded
 void display_bill(FILE *out, Bill *bill) {
@@ -119,7 +119,6 @@ void display_bill(FILE *out, Bill *bill) {
     }
 }
 
-
 // well what if i wanna know abt mah bill? Prints average duration and cost for every month in the bill and le yearly total
 void summarize_bill(FILE *out, Bill *bill) {
     // Monthly
@@ -137,8 +136,19 @@ void summarize_bill(FILE *out, Bill *bill) {
         total_cost += bill->calls[i].cost;
     }
 
-    float avg_duration = total_calls ? (float)total_duration / total_calls : 0.0;
-    float avg_cost = total_calls ? total_cost / total_calls : 0.0;
+    float avg_duration;
+    if (total_calls) {
+        avg_duration = (float)total_duration / total_calls;
+    } else {
+        avg_duration = 0.0;
+    }
+
+    float avg_cost;
+    if (total_calls) {
+        avg_cost = total_cost / total_calls;
+    } else {
+        avg_cost = 0.0;
+    }
     
     int year;
     if (bill->count > 0) {
@@ -153,7 +163,6 @@ void summarize_bill(FILE *out, Bill *bill) {
         avg_duration,
         avg_cost);
 }
-
 
 // well what if i only want a monthly summary? Here ya go 
 void summarize_month(FILE *out, Bill *bill, int month) {
@@ -177,7 +186,6 @@ void summarize_month(FILE *out, Bill *bill, int month) {
     } else {
         float avg_duration = (float)total_duration / total_calls;
         float avg_cost = total_cost / total_calls;
-
         fprintf(out, "   %12s:    Total %d Average Duration: %.4f   Average Cost: %.2f\n",
             month_name,
             total_calls,
@@ -185,8 +193,6 @@ void summarize_month(FILE *out, Bill *bill, int month) {
             avg_cost);
     }
 }
-
-
 // what if i wanna know mah total average cost
 void average_cost(FILE *out, Bill *bill) {
     if (bill->count == 0) {
@@ -209,16 +215,13 @@ void average_duration(FILE *out, Bill *bill) {
         fprintf(out, "        Average Duration: 0\n");
         return;
     }
-
     int total = 0;
     for (int i = 0; i < bill->count; i++) {
         total += bill->calls[i].duration;
     }
-
-    float avg = (float)total / bill->count;
+    float avg = (float)total / bill->count; //don't want to do integer division so float convert
     fprintf(out, "        Average Duration: %.4f\n", avg);
 }
-
 
 // name to month conversion
 int convert_month_by_name(const char *month) {
@@ -232,10 +235,8 @@ int convert_month_by_name(const char *month) {
             return i + 1; // 1-12
         }
     }
-
     return -1;
 }
-
 
 // ADD MY RECORD PLZ
 void add_record(Bill *bill, CallRecord record) {
@@ -245,16 +246,14 @@ void add_record(Bill *bill, CallRecord record) {
         CallRecord *temp = realloc(bill->calls, sizeof(CallRecord) * bill->capacity);
         if (temp == NULL) {
             fprintf(stderr, "realloc failed in recording\n");
-            exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE); //basically return -1
         }
         bill->calls = temp;
     }
-
     //Find za insert position
     int i = bill->count - 1;
     while (i >= 0) {
         CallRecord current = bill->calls[i];
-
         // Compare stuffs
         if (current.date.year > record.date.year ||
             (current.date.year == record.date.year && current.date.month > record.date.month) ||
@@ -266,7 +265,6 @@ void add_record(Bill *bill, CallRecord record) {
             break;
         }
     }
-
     // Insert that 
     bill->calls[i + 1] = record;
     bill->count++;
