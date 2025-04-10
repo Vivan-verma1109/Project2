@@ -68,9 +68,9 @@ void read_bill(const char *filename, Bill *bill) {
         if (line[0] == '#' || line[0] == '\n' || line[0] == '\r') continue;
 
         CallRecord rec;
-        unsigned long long phone;
+        unsigned int phone;
 
-        if (sscanf(line, "%4d%2d%2d %4d %llu %d %f",
+        if (sscanf(line, "%4d%2d%2d %4d %d %d %f",
                 &rec.date.year,
                 &rec.date.month,
                 &rec.date.day,
@@ -183,7 +183,6 @@ void summarize_month(FILE *out, Bill *bill, int month) {
             total_calls,
             avg_duration,
             avg_cost);
-
     }
 }
 
@@ -203,7 +202,6 @@ void average_cost(FILE *out, Bill *bill) {
     float avg = total / bill->count;
     fprintf(out, "        Average Cost: %.2f\n", avg);
 }
-
 
 // what if I wanna know my average duration
 void average_duration(FILE *out, Bill *bill) {
